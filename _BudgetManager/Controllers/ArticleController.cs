@@ -186,20 +186,26 @@ namespace _BudgetManager.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id, Article model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                bool didUpdateModelSucceed = DataLayer.EditArticle(id, model);
-                if (didUpdateModelSucceed)
+                if (ModelState.IsValid)
                 {
+                    bool didUpdateModelSucceed = DataLayer.EditArticle(id, model);
+                    if (didUpdateModelSucceed)
+                    {
 
-                    return RedirectToAction("Index");
+                        return RedirectToAction("Index");
+                    }
                 }
+                this.FillDropDownValuesCategory();
+                this.FillDropDownValuesCurrency();
+                this.FillDropDownValuesTypeOfPay();
+                return View(model);
             }
-            this.FillDropDownValuesCategory();
-            this.FillDropDownValuesCurrency();
-            this.FillDropDownValuesTypeOfPay();
-
-            return View(model);
+            catch
+            {
+                return View(model);
+            }
         }
 
 
