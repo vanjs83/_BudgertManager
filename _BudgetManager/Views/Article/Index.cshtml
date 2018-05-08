@@ -1,0 +1,95 @@
+﻿﻿﻿﻿﻿@model List<DataAccess.Models.Article>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="panel panel-heading">
+    <div class="row">
+        <div class="col-xs-8">
+            <h2>Show Article</h2>
+        </div>
+        <div class="col-xs-4 text-right">
+            <a href="@Url.Action("Create")" style="margin-top: 20px;" class="btn btn-success">Add new Article</a>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="filter-wrapper">
+</div>
+
+
+<div id="table-wrapper">
+    @Html.Partial("_IndexTable", Model)
+</div>
+
+
+@section Scripts {
+
+
+
+
+    <script type="text/javascript">
+
+                     //Podiže filter
+                  $(document).ready(function () {
+
+                    $.ajax({
+                        url: '@Url.Action("FilterForm", "Article")',
+                        method: "GET",
+                        success: function (result) {
+                            $("#filter-wrapper").html(result);
+                        }
+                    })
+
+
+                    //Ready
+                });
+
+
+            //Filter mode
+             function applyFilter(sender) {
+                    var formSerialized = $(sender).closest('form').serialize();
+                    $.ajax({
+                        url: '@Url.Action("IndexAjax", "Article")',
+                        method: "POST",
+                        data: formSerialized,
+                        success: function (result) {       
+                            $("#table-wrapper").find("table").replaceWith(result);
+                        },
+                        error: function (result) {
+                            alert("error");
+                        }
+                    })
+                }
+
+
+
+              /*DELETE*/
+                 function deleted(sender) {
+    
+                    var url = $(sender).data("url");
+
+                  
+                    $.ajax({
+                         url: url,
+                        dataType: "json",
+                        type: "POST",
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                        if (data == "OK")
+                        alert("Success");
+                        $(sender).closest("tr").remove();
+                        },
+                        error: function (xhr) {
+                        alert('error');
+                              }
+                        })
+            }
+
+
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+}

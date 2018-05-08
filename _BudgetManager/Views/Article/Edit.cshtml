@@ -1,0 +1,36 @@
+﻿
+@model DataAccess.Models.Article
+
+@{
+    ViewBag.Title = "Create new Article";
+}
+
+<h2>Edit article data</h2>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Pregled Artikala", "Index")</li>
+    <li class="active">Create new Article</li>
+</ol>
+
+
+@using (Html.BeginForm())
+{
+    <text>
+        @Html.Partial("_CreateOrEdit")
+    </text>
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+
+
+
+
+
+
+@section Scripts { @Scripts.Render("~/bundles/jqueryval") }

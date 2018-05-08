@@ -1,0 +1,114 @@
+﻿﻿﻿﻿﻿@model List<DataAccess.Models.Category>
+
+
+
+<div class="panel panel-heading">
+    <div class="row">
+        <div class="col-xs-8">
+            <h2>Show Category</h2>
+        </div>
+        <div class="col-xs-4 text-right">
+            <a href="@Url.Action("Create")" style="margin-top: 20px;" class="btn btn-success">Add new Category</a>
+        </div>
+    </div>
+</div>
+
+
+
+<table class="table table-condensed table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th> Date </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+    {
+        <tr>
+            <td>@c.Id</td>
+            <td>@c.Name</td>
+            <td>@c.Ctime.ToShortDateString()</td>
+            <td>@Html.ActionLink("Edit", "Edit", "Category", new { id = c.Id }, null)</td>
+            <td data-url="@Url.Action("Delete", "Category", new { id = c.Id})" onclick="deleted(this)"><a href="#">Delete</a></td>
+        </tr>
+}
+        </tbody>
+</table>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+
+    <script type="text/javascript">
+
+
+
+                     //Podiže filter
+                  $(document).ready(function () {
+
+                    $.ajax({
+                        url: '@Url.Action("FilterForm", "Article")',
+                        method: "GET",
+                        success: function (result) {
+                            $("#filter-wrapper").html(result);
+                        }
+                    })
+
+
+                    //Ready
+                });
+
+            //Filter mode
+             function applyFilter(sender) {
+                    var formSerialized = $(sender).closest('form').serialize();
+
+                    $.ajax({
+                        url: '@Url.Action("IndexAjax", "Article")',
+                        method: "POST",
+                        data: formSerialized,
+                        success: function (result) {
+                            alert("Success IndexAjax")
+                            $("#table-wrapper").find("table").replaceWith(result);
+                        },
+                        error: function (result) {
+                            alert(result);
+                            alert(formSerialized);
+
+                        }
+                    })
+                }
+
+
+              /*DELETE*/
+                 function deleted(sender) {
+                    //alert("Ulazim u delete Company");
+
+                    //var data = $(sender).closest('td').serialize();
+                    var url = $(sender).data("url");
+
+                    //alert(data);
+
+                    $.ajax({
+                         url: url,
+                        dataType: "json",
+                        type: "POST",
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                        if (data == "OK")
+                        alert("Success");
+                        $(sender).closest("tr").remove();
+                        },
+                        error: function (xhr) {
+                        alert('error');
+                              }
+                        })
+            }
+
+
+    </script>
+
+}

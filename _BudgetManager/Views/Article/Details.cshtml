@@ -1,0 +1,62 @@
+﻿﻿﻿﻿﻿@model DataAccess.Models.Article
+@{
+    ViewBag.Title = "Detalji artikala";
+}
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Pregled artikala", "Index")</li>
+    <li class="active">Detalji o Artiklima</li>
+</ol>
+<h2>Pregled detalja Artikala</h2>
+
+@if (Model == null)
+{
+    <div class="alert alert-danger" role="alert">Ne postoji odabrani artikl!</div>
+}
+else
+{
+    <table class="table table-condensed">
+        <tbody>
+            <tr>
+                <th>ID</th>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>@Model.Name</td>
+            </tr>
+
+            <tr>
+                <th>Suma</th>
+                <td>@Model.Suma</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>@Model.Ctime.ToShortDateString()</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td>@Model.Category.Name</td>
+            </tr>
+            <tr>
+                <th>Valute</th>
+                <td>@Model.Currency.Name</td>
+            </tr>
+
+            <tr>
+                <th>Symbol</th>
+                <td>@Model.Currency.Symbol</td>
+            </tr>
+
+
+            <tr>
+                <th>Type of pay</th>
+                <td>@Model.Pay.Name</td>
+            </tr>
+
+            <tr>
+                <td colspan="2">@Html.ActionLink("Uredi", "Edit", new { id = Model.Id })</td>
+            </tr>
+        </tbody>
+    </table>
+}
